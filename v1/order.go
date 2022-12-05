@@ -74,6 +74,31 @@ type OpenOrderListResponse struct {
 	PriceDone  interface{} `json:"price_done"`
 }
 
+type OrderHistoryResponse struct {
+	Status bool
+	Error  string
+	Data   OrderHistoryDataResponse
+}
+
+type OrderHistoryDataResponse struct {
+	List []OrderHistoryListResponse
+}
+
+type OrderHistoryListResponse struct {
+	Id         int         `json:"id"`
+	Type       int         `json:"type"`
+	Status     int         `json:"status"`
+	TypeTrade  int         `json:"type_trade"`
+	Pair       string      `json:"pair"`
+	Volume     float64     `json:"volume"`
+	VolumeDone float64     `json:"volume_done"`
+	Rate       float64     `json:"rate"`
+	Price      float64     `json:"price"`
+	TimeCreate int         `json:"time_create"`
+	TimeDone   interface{} `json:"time_done"`
+	PriceDone  float64     `json:"price_done"`
+}
+
 //Create OrderService creates order and return orderId
 func (a *OrderService) Create(pair string, quantity float64, price float64, orderType string, typeTrade string) (OrderCreateResponse, error) {
 
@@ -170,6 +195,26 @@ func (a *OrderService) GetOpenOrders() (OpenOrdersResponse, error) {
 
 	if err != nil {
 		return OpenOrdersResponse{}, err
+	}
+
+	return v, nil
+}
+
+func (a *OrderService) GetOrdersHistory() (OrderHistoryResponse, error) {
+	params := make(map[string]string)
+
+	req, err := a.c.newAuthenticatedRequest("history", params)
+
+	if err != nil {
+		return OrderHistoryResponse{}, err
+	}
+
+	var v OrderHistoryResponse
+
+	_, err = a.c.performRequest(req, &v)
+
+	if err != nil {
+		return OrderHistoryResponse{}, err
 	}
 
 	return v, nil

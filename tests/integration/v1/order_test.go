@@ -34,3 +34,15 @@ func TestGetOpenOrders(t *testing.T) {
 	}
 
 }
+
+func TestGetOrderHistory(t *testing.T) {
+	orderHistoryResponse, err := client.Order.GetOrdersHistory()
+
+	if err != nil {
+		t.Fatalf("Order.GetOpenOrders() returned error: %v", err)
+	}
+	if orderHistoryResponse.Status {
+		t.Logf("orders : %v", len(orderHistoryResponse.Data.List))
+	}
+
+}
