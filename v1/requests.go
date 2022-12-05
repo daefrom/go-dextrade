@@ -105,7 +105,7 @@ func (c *Client) performRequest(req *http.Request, v interface{}) (*Response, er
 	}
 	defer resp.Body.Close()
 
-	//body, err := ioutil.ReadAll(resp.Body)
+	//log.Printf("body response: %s", body)
 	if err != nil {
 		body = []byte(`Error reading body:` + err.Error())
 	}

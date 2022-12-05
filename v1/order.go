@@ -71,8 +71,9 @@ func (a *OrderService) Create(pair string, quantity float64, price float64, orde
 	var v = OrderCreateResponse{}
 
 	_, err = a.c.performRequest(req, &v)
+
 	if err != nil {
-		return OrderCreateResponse{}, err
+		return v, err
 	}
 
 	return v, nil
