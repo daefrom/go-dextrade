@@ -22,3 +22,15 @@ func TestOrderCreateAndCancel(t *testing.T) {
 		t.Fatalf("Order.Cancel() returned error: %v", err)
 	}
 }
+
+func TestGetOpenOrders(t *testing.T) {
+	openOrdersResponse, err := client.Order.GetOpenOrders()
+
+	if err != nil {
+		t.Fatalf("Order.GetOpenOrders() returned error: %v", err)
+	}
+	if openOrdersResponse.Status {
+		t.Logf("orders : %v", len(openOrdersResponse.Data.List))
+	}
+
+}

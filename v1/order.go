@@ -44,7 +44,34 @@ type OrderDataResponse struct {
 
 type OrderResponse struct {
 	Status bool
+	Error  string
 	Data   OrderDataResponse
+}
+
+type OpenOrdersResponse struct {
+	Status bool
+	Error  string
+	Data   OpenOrderDataResponse
+}
+
+type OpenOrderDataResponse struct {
+	List []OpenOrderListResponse
+}
+
+type OpenOrderListResponse struct {
+	Id         int         `json:"id"`
+	Type       int         `json:"type"`
+	Status     int         `json:"status"`
+	TypeTrade  int         `json:"type_trade"`
+	Pair       string      `json:"pair"`
+	Volume     string      `json:"volume"`
+	VolumeDone interface{} `json:"volume_done"`
+	Rate       string      `json:"rate"`
+	Price      string      `json:"price"`
+
+	TimeCreate int         `json:"time_create"`
+	TimeDone   interface{} `json:"time_done"`
+	PriceDone  interface{} `json:"price_done"`
 }
 
 //Create OrderService creates order and return orderId
@@ -126,4 +153,24 @@ func (a *OrderService) Cancel(orderID int) error {
 	}
 
 	return nil
+}
+
+func (a *OrderService) GetOpenOrders() (OpenOrdersResponse, error) {
+	params := make(map[string]string)
+
+	req, err := a.c.newAuthenticatedRequest("orders", params)
+
+	if err != nil {
+		return OpenOrdersResponse{}, err
+	}
+
+	var v OpenOrdersResponse
+
+	_, err = a.c.performRequest(req, &v)
+
+	if err != nil {
+		return OpenOrdersResponse{}, err
+	}
+
+	return v, nil
 }

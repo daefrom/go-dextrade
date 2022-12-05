@@ -8,11 +8,11 @@ type Currency struct {
 	Iso3 string
 	Name string
 }
-type BalanceListResponse struct {
-	List []BalanceDataResponse
+type BalanceDataResponse struct {
+	List []BalanceListResponse
 }
 
-type BalanceDataResponse struct {
+type BalanceListResponse struct {
 	Balance          float64 `json:"balance"`
 	BalanceAvailable float64 `json:"balance_available"`
 	Currency         Currency
@@ -21,7 +21,7 @@ type BalanceDataResponse struct {
 type BalanceResponse struct {
 	Status bool
 	Error  string
-	Data   BalanceListResponse
+	Data   BalanceDataResponse
 }
 
 func (a *BalancesService) GetBalances() (BalanceResponse, error) {
